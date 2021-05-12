@@ -2,14 +2,15 @@ import './App.scss'
 import TabButton from "./components/TabButton";
 import {useState} from "react";
 import ListItem from "./components/ListItem";
+import {nanoid} from "nanoid";
 
-function App() {
+function App({tasks}) {
   const [tabButtons, setTabButtons] = useState([
     {name: 'All', active: true},
     {name: 'Active', active: false},
     {name: 'Completed', active: false},
   ])
-  const [lists, setLists] = useState([])
+  const [lists, setLists] = useState(tasks)
   const [value, setValue] = useState('')
   const handleTabsClick = (index) => {
     const newTabButtons = [...tabButtons]
@@ -22,14 +23,17 @@ function App() {
   }
   const handleSubmit = (e) => {
     e.preventDefault()
-    if(value){
-      const stamp = new Date().toString()//?
-      const newLists = [...lists,{id:stamp,value,checked: false}]
+    if (value) {
+      const newLists = [...lists, {id: 'todo-' + nanoid(), value, completed: false}]
       setLists(newLists)
       setValue('')
     } else {
       alert('Hi there! type something!!pls~')
     }
+  }
+  const handleDelete = id => {
+    const newLists = lists.filter(list => list.id !== id)
+    setLists(newLists)
   }
   return (
     <div className="App">
@@ -58,12 +62,19 @@ function App() {
             index={i}
             name={b.name}
             active={b.active}
-            handleTabsClick={handleTabsClick}/>
+            handleTabsClick={handleTabsClick}
+          />
         ))}
       </div>
       <h2 id="list-heading" tabIndex="-1">0 tasks remaining</h2>
       <ul role="list" className="todo-list stack-large stack-exception" aria-labelledby="list-heading">
-        {lists && lists.map(item => <ListItem key={item.id} value={item.value} checked={item.checked}/>)}
+        {lists && lists.map(item => <ListItem
+          key={item.id}
+          id={item.id}
+          value={item.value}
+          completed={item.completed}
+          handleDelete={handleDelete}
+        />)}
       </ul>
     </div>
   )
