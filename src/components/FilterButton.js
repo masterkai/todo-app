@@ -1,12 +1,12 @@
 import React from 'react';
 
-const TabButton = ({name, active, index, handleTabsClick}) => {
+const FilterButton = ({name, isPressed, setFilter}) => {
   return (
     <button
-      onClick={()=>handleTabsClick(index)}
+      onClick={() => setFilter(name)}
       type="button"
       className="btn toggle-btn"
-      aria-pressed={active}>
+      aria-pressed={isPressed}>
       <span className="visually-hidden">Show </span>
       <span>{name}</span>
       <span className="visually-hidden"> tasks</span>
@@ -14,4 +14,4 @@ const TabButton = ({name, active, index, handleTabsClick}) => {
   );
 };
 
-export default TabButton;
+export default FilterButton;
