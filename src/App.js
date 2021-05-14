@@ -11,6 +11,7 @@ function usePrevious(value) {
   useEffect(() => {
     ref.current = value
   })
+  return ref.current;
 }
 
 function App({tasks}) {
@@ -74,8 +75,8 @@ function App({tasks}) {
     setLists(editedTask)
   }
 
-  const tasksNoun = lists.length !== 1 ? 'tasks' : 'task'
-  const headingText = `${lists.length} ${tasksNoun} remaining`
+  const tasksNoun = taskList.length !== 1 ? 'tasks' : 'task'
+  const headingText = `${taskList.length} ${tasksNoun} remaining`
 
   const listHeadingRef = useRef(null)
   const prevTaskLength = usePrevious(lists.length)

@@ -1,9 +1,9 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 function usePrevious(value) {
   const ref = useRef()
   useEffect(() => {
-    ref.current= value
+    ref.current = value
   })
   return ref.current
 }
@@ -14,18 +14,21 @@ const ListItem = ({id, value, completed, handleDelete, toggleTaskCompleted, edit
   const editFieldRef = useRef(null);
   const editButtonRef = useRef(null);
   const wasEditing = usePrevious(isEditing);
-  function handleChange({target:{value}}) {
+
+  function handleChange({target: {value}}) {
     setNewName(value)
   }
+
   function handleSubmit(e) {
     e.preventDefault();
-    if(!newName.trim()){
+    if (!newName.trim()) {
       return
     }
-    editTask(id,newName)
+    editTask(id, newName)
     setNewName('')
     setEditing(false)
   }
+
   const editingTemplate = (
     <form className="stack-small" onSubmit={handleSubmit}>
       <div className="form-group">
@@ -36,7 +39,7 @@ const ListItem = ({id, value, completed, handleDelete, toggleTaskCompleted, edit
           id={id}
           className="todo-text"
           type="text"
-          value={newName || value}
+          value={newName===''?'':newName}
           onChange={handleChange}
           ref={editFieldRef}
         />
@@ -64,8 +67,8 @@ const ListItem = ({id, value, completed, handleDelete, toggleTaskCompleted, edit
         <input
           id={id}
           type="checkbox"
-          checked={completed}
-          onChange={()=>toggleTaskCompleted(id)}
+          defaultChecked={completed}
+          onChange={() => toggleTaskCompleted(id)}
         />
         <label
           className="todo-label"
@@ -74,7 +77,7 @@ const ListItem = ({id, value, completed, handleDelete, toggleTaskCompleted, edit
       <div className="btn-group">
         <button
           type="button"
-          onClick={()=>setEditing(true)}
+          onClick={() => setEditing(true)}
           className="btn"
           ref={editButtonRef}
         >
@@ -83,7 +86,7 @@ const ListItem = ({id, value, completed, handleDelete, toggleTaskCompleted, edit
         </button>
         <button type="button"
                 className="btn btn__danger"
-                onClick={()=>handleDelete(id)}
+                onClick={() => handleDelete(id)}
         >Delete <span className="visually-hidden">{value}</span>
         </button>
       </div>
@@ -100,7 +103,7 @@ const ListItem = ({id, value, completed, handleDelete, toggleTaskCompleted, edit
   }, [wasEditing, isEditing]);
 
   return (
-    <div className='todo'>{isEditing?editingTemplate:viewTemplate}</div>
+    <div className='todo'>{isEditing ? editingTemplate : viewTemplate}</div>
   );
 };
 
